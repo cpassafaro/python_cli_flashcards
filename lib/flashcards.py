@@ -9,7 +9,6 @@ conn.autocommit = True
 
 
 #pull easy information
-# easy = "select * from flashcards where difficulty= 'easy' "
 cursor = conn.cursor()
 # cursor.execute(insert)
 # result = cursor.fetchall()
@@ -52,8 +51,50 @@ def create_cards():
     result = cursor.fetchall()
     print(result)
 
+def launch_easy():
+    # correct = 0
+    # incorrect = 0 
 
-#pick how many cards they want to review
-#keep track of how many cards have been answered correctly
+    print('Here are your easy questions!')
+    easy = "select * from flashcards where difficulty= 'easy' "
+    cursor.execute(easy)
+    result = cursor.fetchall()
+    for i in range(len(result)):
+        user_answer= str(input((f'{result[i][3]}:')))
+        print(result[i][4])
+        if(user_answer == result[i][4]):
+            print('Correct')
+            score = result[i][5]
+            new_score = score + 1
+
+            cursor.execute(f'update flashcards set correct = {new_score} where ID = {result[i][0]}')
+
+            print(f"You've answered this correct {new_score} times and incorrect {result[i][6]} times during this session")
+
+        elif(user_answer != result[i][4]):
+            print('Incorrect')
+            score = result[i][6]
+            incorrect_score = score +1
+
+            cursor.execute(f'update flashcards set incorrect = {incorrect_score} where ID = {result[i][0]}')
+
+            print(f"You've answered this correct {result[i][5]} times and incorrect {incorrect_score} times during this session")
+
+    play_again = input('Would you like to play again? y or n:')
+    if(play_again == 'y'):
+        easy_mode = input('Would you like to stay in easy mode? y or n:')
+        if(easy_mode == 'y'):
+            launch_easy()
+        elif(easy_mode == 'n'):
+            launch_game()
+        
+
+
+
 
 game_intro()
+
+# testing script
+# cursor.execute('''SELECT * from flashcards''')
+# result = cursor.fetchall()
+# print(result)
