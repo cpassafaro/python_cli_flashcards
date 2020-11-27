@@ -23,7 +23,8 @@ def game_intro():
     elif(createorplay == 'c'):
         create_cards()
     else:
-        print('Please enter a valid response /n p for play or c for create')
+        print('Please enter a valid response p for play or c for create')
+        game_intro()
 
 
 #create gameplay
@@ -87,8 +88,74 @@ def launch_easy():
             launch_easy()
         elif(easy_mode == 'n'):
             launch_game()
-        
 
+def launch_medium():
+    print('Here are your medium questions!')
+    medium = "select * from flashcards where difficulty= 'medium' "
+    cursor.execute(medium)
+    result = cursor.fetchall()
+    for i in range(len(result)):
+        user_answer= str(input((f'{result[i][3]}:')))
+        print(result[i][4])
+        if(user_answer == result[i][4]):
+            print('Correct')
+            score = result[i][5]
+            new_score = score + 1
+
+            cursor.execute(f'update flashcards set correct = {new_score} where ID = {result[i][0]}')
+
+            print(f"You've answered this correct {new_score} times and incorrect {result[i][6]} times during this session")
+
+        elif(user_answer != result[i][4]):
+            print('Incorrect')
+            score = result[i][6]
+            incorrect_score = score +1
+
+            cursor.execute(f'update flashcards set incorrect = {incorrect_score} where ID = {result[i][0]}')
+
+            print(f"You've answered this correct {result[i][5]} times and incorrect {incorrect_score} times during this session")
+
+    play_again = input('Would you like to play again? y or n:')
+    if(play_again == 'y'):
+        easy_mode = input('Would you like to stay in medium mode? y or n:')
+        if(easy_mode == 'y'):
+            launch_medium()
+        elif(easy_mode == 'n'):
+            launch_game()
+
+def launch_hard():
+    print('Here are your hard questions!')
+    hard = "select * from flashcards where difficulty= 'hard' "
+    cursor.execute(hard)
+    result = cursor.fetchall()
+    for i in range(len(result)):
+        user_answer= str(input((f'{result[i][3]}:')))
+        print(result[i][4])
+        if(user_answer == result[i][4]):
+            print('Correct')
+            score = result[i][5]
+            new_score = score + 1
+
+            cursor.execute(f'update flashcards set correct = {new_score} where ID = {result[i][0]}')
+
+            print(f"You've answered this correct {new_score} times and incorrect {result[i][6]} times during this session")
+
+        elif(user_answer != result[i][4]):
+            print('Incorrect')
+            score = result[i][6]
+            incorrect_score = score +1
+
+            cursor.execute(f'update flashcards set incorrect = {incorrect_score} where ID = {result[i][0]}')
+
+            print(f"You've answered this correct {result[i][5]} times and incorrect {incorrect_score} times during this session")
+
+    play_again = input('Would you like to play again? y or n:')
+    if(play_again == 'y'):
+        easy_mode = input('Would you like to stay in hard mode? y or n:')
+        if(easy_mode == 'y'):
+            launch_hard()
+        elif(easy_mode == 'n'):
+            launch_game()
 
 
 
