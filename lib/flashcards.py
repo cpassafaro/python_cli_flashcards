@@ -1,18 +1,14 @@
 import psycopg2
 from main import FlashCards 
+from peewee import *
 
 conn = psycopg2.connect(
     database='flashcards', user='postgres', password='', host='localhost', port=5432
 )
 
 conn.autocommit = True
-
-
-#pull easy information
 cursor = conn.cursor()
-# cursor.execute(insert)
-# result = cursor.fetchall()
-# print(result)
+
 
 #game into
 def game_intro():
@@ -46,8 +42,7 @@ def create_cards():
     difficulty = str(input('Please enter a flashcard difficulty:'))
     question = str(input('Please enter a flashcard question:'))
     answer = str(input('Please enter a flashcard answer:'))
-    insert = f"""insert into flashcards (category, difficulty, question, answer) values ('{category}', '{difficulty}', '{question}', '{answer}')"""
-    cursor.execute(insert)
+    FlashCards.insert(category = category, difficulty=difficulty, question = question, answer = answer, correct = 0, incorrect = 0).execute()
     cursor.execute('select * from flashcards')
     result = cursor.fetchall()
     print(result)
