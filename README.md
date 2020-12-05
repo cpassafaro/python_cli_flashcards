@@ -2,7 +2,7 @@
 _____________________
 
 ## How to play
-Simply fork and clone repo down. Run npm install to install dependencies. Game can be played through the command line from the flashcards file. There are options on what level you would like to play on. You can also create your own cards through the command line as well.
+Simply fork and clone repo down. Run pipenv install to install dependencies. Game can be played through the command line from the flashcards file. There are options on what level you would like to play on. You can also create your own cards through the command line as well.
 
 __Description__
 _______________
